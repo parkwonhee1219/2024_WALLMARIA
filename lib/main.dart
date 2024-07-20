@@ -25,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final client = MqttServerClient('3.64.90.245', '');
+  final client = MqttServerClient('broker.hivemq.com', '');
 
   @override
   void initState() {
