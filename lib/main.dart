@@ -26,7 +26,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final client = MqttServerClient('broker.hivemq.com', '');
-
+  bool isOpen = false; // 상태를 저장
+  String MoonGu = 'Publish Message'; //isOpen에 의해 추후에 변화
   @override
   void initState() {
     super.initState();
@@ -100,6 +101,15 @@ class _MyHomePageState extends State<MyHomePage> {
     client.publishMessage(topic, MqttQos.atLeastOnce, builder.payload!);
   }
 
+  void _toggleWallMaria() {
+    setState(() {
+      isOpen = !isOpen;
+    });
+    final message = isOpen ? 'WALLMARIA_OPEN' : 'WALLMARIA_CLOSE';
+    _publishMessage('test/zini_hyeon', message);
+    MoonGu = isOpen ? '상태: Open' : '상태: Close';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,11 +120,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              '수동으로 열기/닫기',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 10), // 텍스트와 버튼 사이의 간격
             ElevatedButton(
-              onPressed: () {
-                _publishMessage('test/zini_hyeon', 'LETs_GO_TEAM_WALLMARIA');
-              },
-              child: Text('Publish Message'),
+              onPressed: _toggleWallMaria,
+              child: Text(MoonGu),
             ),
           ],
         ),
